@@ -42,23 +42,24 @@ def extract_product_data(url):
         soup = BeautifulSoup(html, 'html.parser')
         spu = soup.find('span', class_='value', itemprop='sku').text
         detail = soup.find('div', class_='value').text
+        name = soup.find('h1').text
         imgs = count_duplicates([img.get('src') for img in soup.find_all('img', class_='img-responsive')], spu)
         data = {
             'spu': spu,
-            'name': soup.find('h1').text,
+            'name': name,
             'img_urls': imgs,
             'detail': detail,
         }
         return data
     return None
 
-def count_duplicates(img_urls, spu):
+def count_duplicates(img_urls, name):
     """
     Подсчитывает дубликаты URL-адресов изображений.
     """
     duplicates_count = Counter(img_urls)
 
-    return [img_url for img_url, count in duplicates_count.items() if count > 1 and spu in img_url]
+    return [img_url for img_url, count in duplicates_count.items() if count > 1 and name in img_url]
 
 def write_to_csv(products):
     """
@@ -88,24 +89,37 @@ def main():
     # Пример использования функции
     file_path = "example.txt"  # Путь к вашему файлу
 
+    lines = read_lines_from_file    (file_path)
     # Пройдемся по каждой строке файла и напечатаем ее
-    for line in read_file_line_by_line(file_path):
+    for line in lines:
         letsgo(line)
         print("Good")
 
-def read_file_line_by_line(file_path):
+def read_lines_from_file(filename):
+    """
+    Читает файл построчно и возвращает список строк.
+
+    Args:
+    filename (str): Имя файла для чтения.
+
+    Returns:
+    list: Список строк из файла.
+    """
+    lines = []
     try:
-        with open(file_path, 'r') as file:
+        with open(filename, 'r', encoding='utf-8') as file:
             for line in file:
-                yield line.strip()  # Возвращаем строку без символов переноса строки
+                lines.append(line.strip())  # Удаляем символы перевода строки и пробелы
     except FileNotFoundError:
         print("Файл не найден.")
     except Exception as e:
-        print("Произошла ошибка:", e)
-
+        print("Произошла ошибка при чтении файла:", str(e))
+    return lines
     
 
 def letsgo(SPU):
+    print(SPU)
+
     url = 'https://reforma.top/instantsearch/result/?q=' + SPU
 
     product_links = extract_product_links(url)
