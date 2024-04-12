@@ -93,7 +93,8 @@ def main():
     # Пройдемся по каждой строке файла и напечатаем ее
     for line in lines:
         letsgo(line)
-        print("Good")
+        print("Good"
+              "\n")
 
 def read_lines_from_file(filename):
     """
@@ -144,8 +145,9 @@ def letsgo(SPU):
                 'Variant Inventory Qty': '3',
                 'Variant Inventory Policy': 'deny',
                 'Variant Fulfillment Service': 'manual',
-                'Variant Price': '5.00',
-                'Variant Compare At Price': '20.00',
+                'Variant Price': '10.00',
+                'Cost per item': '3.50',
+                'Variant Compare At Price': '13.00',
                 'Variant Requires Shipping': 'true',
                 'Variant Taxable': 'true',
                 'Image Src':  product_data['img_urls'][0],
@@ -167,14 +169,14 @@ def letsgo(SPU):
         write_to_csv(products)
         print("Данные успешно записаны в файл 'products.csv'")
     else:
-        write_to_csv(SPU)
+        write_to_csv_NotFound(int(SPU))
         print("Не найдены ссылки на товары.")
         # print(data["handle"])
 
         # # print(data["detail"])
         # # print(extract_product_data(product_links[0]))
 
-def write_to_csv(var1):
+def write_to_csv_NotFound(var1):
     with open('notFined.cvs', 'a', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(var1)
