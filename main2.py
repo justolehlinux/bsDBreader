@@ -85,9 +85,25 @@ def write_to_csv(products):
 
 def main():
     # SPU = "941423"
-    for i in  range(1, 999999):
-        letsgo(str(i))
+    # Пример использования функции
+    file_path = "example.txt"  # Путь к вашему файлу
+
+    # Пройдемся по каждой строке файла и напечатаем ее
+    for line in read_file_line_by_line(file_path):
+        letsgo(line)
         print("Good")
+
+def read_file_line_by_line(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            for line in file:
+                yield line.strip()  # Возвращаем строку без символов переноса строки
+    except FileNotFoundError:
+        print("Файл не найден.")
+    except Exception as e:
+        print("Произошла ошибка:", e)
+
+    
 
 def letsgo(SPU):
     url = 'https://reforma.top/instantsearch/result/?q=' + SPU
