@@ -167,11 +167,20 @@ def letsgo(SPU):
         write_to_csv(products)
         print("Данные успешно записаны в файл 'products.csv'")
     else:
+        write_to_csv(SPU)
         print("Не найдены ссылки на товары.")
         # print(data["handle"])
 
         # # print(data["detail"])
         # # print(extract_product_data(product_links[0]))
+
+def write_to_csv(var1):
+    with open('notFined.cvs', 'a', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(var1)
+
+# Example usage:
+
 
 if __name__ == "__main__":
     main()
