@@ -80,7 +80,7 @@ def write_to_csv(products):
     """
     Записывает данные о продуктах в CSV-файл.
     """
-    with open('products1.csv', 'a', newline='', encoding='utf-8') as csvfile:
+    with open('products3.csv', 'a', newline='', encoding='utf-8') as csvfile:
         fieldnames = ['Handle', 'Title', 'Body (HTML)', 'Vendor', 'Product Category', 'Type', 'Tags',
                       'Published', 'Option1 Name', 'Option1 Value', 'Option2 Name', 'Option2 Value',
                       'Option3 Name', 'Option3 Value', 'Variant SKU', 'Variant Grams', 'Variant Inventory Tracker',
