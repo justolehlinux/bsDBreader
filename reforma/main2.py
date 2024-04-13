@@ -45,8 +45,8 @@ def extract_product_data(url):
         # extracted_setring = html.split('/')[-1].replace('.html', '')
         soup = BeautifulSoup(html, 'html.parser')
         spu = soup.find('span', class_='value', itemprop='sku').text
-        detail = soup.find('div', class_='value').text
-        # print(Handle)
+        detail = soup.find('div', class_='value').contents[0]
+        print(detail)
         # colorName = str(Handle).split('-')[-1]
         name = soup.find('h1').text
         # imgs = count_duplicates([img.get('src') for img in soup.find_all('img', class_='img-responsive', alt=name)], spu, colorname)
@@ -80,7 +80,7 @@ def write_to_csv(products):
     """
     Записывает данные о продуктах в CSV-файл.
     """
-    with open('products3.csv', 'a', newline='', encoding='utf-8') as csvfile:
+    with open('Nproducts.csv', 'a', newline='', encoding='utf-8') as csvfile:
         fieldnames = ['Handle', 'Title', 'Body (HTML)', 'Vendor', 'Product Category', 'Type', 'Tags',
                       'Published', 'Option1 Name', 'Option1 Value', 'Option2 Name', 'Option2 Value',
                       'Option3 Name', 'Option3 Value', 'Variant SKU', 'Variant Grams', 'Variant Inventory Tracker',
@@ -104,7 +104,7 @@ def main():
     # letsgo(SPU)
 
     # Пример использования функции
-    file_path = "example.txt"  # Путь к вашему файлу
+    file_path = "NewExample.txt"  # Путь к вашему файлу
 
     lines = read_lines_from_file    (file_path)
     # Пройдемся по каждой строке файла и напечатаем ее
@@ -146,43 +146,52 @@ def letsgo(SPU):
         product_data = extract_product_data(product_links[0])
         # print(product_data)
         if product_data and product_data['img_urls']:            # Создание записи о продукте для CSV
-            product_record = {
-                # 'Handle': product_links[0].split('/')[-1].replace('.html', ''),
-                'Handle': product_data['Handle'],
-                'Title': product_data['name'],
-                'Body (HTML)': product_data['detail'],
-                'Vendor': 'Reforma',
-                'Product Category': 'Salud y belleza > Cuidado personal > Cosméticos',
-                'Type': 'Gel Polish',
-                'Published': 'true',
-                'Option1 Name': 'Title',
-                'Option1 Value': 'Default Title',
-                'Variant SKU': product_data['spu'],
-                'Variant Grams': '15.0',
-                'Variant Inventory Tracker': 'shopify',
-                'Variant Inventory Qty': '0',
-                'Variant Inventory Policy': 'deny',
-                'Variant Fulfillment Service': 'manual',
-                'Variant Price': '10.00',
-                'Cost per item': '3.50',
-                'Variant Compare At Price': '13.00',
-                'Variant Requires Shipping': 'true',
-                'Variant Taxable': 'true',
-                'Image Src':  product_data['img_urls'][0],
-                'Image Position': '1',
-                'Gift Card': 'false',
-                'Google Shopping / Gender': 'g',
-                'Google Shopping / Custom Product': 'true',
-                'Status': 'active'
-            }
-            products.append(product_record)
-            for img_index, img_url in enumerate(product_data['img_urls'], start=2):
-                img_record = {
+            # product_record = {
+            #     # 'Handle': product_links[0].split('/')[-1].replace('.html', ''),
+            #     'Handle': product_data['Handle'],
+            #     'Title': product_data['name'],
+            #     'Body (HTML)': product_data['detail'],
+            #     'Vendor': 'Reforma',
+            #     'Product Category': 'Salud y belleza > Cuidado personal > Cosméticos',
+            #     'Type': 'Gel Polish',
+            #     'Published': 'true',
+            #     'Option1 Name': 'Title',
+            #     'Option1 Value': 'Default Title',
+            #     'Variant SKU': product_data['spu'],
+            #     'Variant Grams': '15.0',
+            #     'Variant Inventory Tracker': 'shopify',
+            #     'Variant Inventory Qty': '0',
+            #     'Variant Inventory Policy': 'deny',
+            #     'Variant Fulfillment Service': 'manual',
+            #     'Variant Price': '10.00',
+            #     'Cost per item': '3.50',
+            #     'Variant Compare At Price': '13.00',
+            #     'Variant Requires Shipping': 'true',
+            #     'Variant Taxable': 'true',
+            #     'Image Src':  product_data['img_urls'][0],
+            #     'Image Position': '1',
+            #     'Gift Card': 'false',
+            #     'Google Shopping / Gender': 'g',
+            #     'Google Shopping / Custom Product': 'true',
+            #     'Status': 'active'
+            # }
+            # products.append(product_record)
+            # for img_index, img_url in enumerate(product_data['img_urls'], start=2):
+            #     img_record = {
+            #         'Handle': product_data['Handle'],
+            #         'Image Src': img_url,
+            #         'Image Position': str(img_index)
+            #     }
+            img_record = {
                     'Handle': product_data['Handle'],
-                    'Image Src': img_url,
-                    'Image Position': str(img_index)
+                    'Title': product_data['name'],
+                    'Body (HTML)': product_data['detail'],
+                    'Vendor': 'Reforma',
+                    'Product Category': 'Salud y belleza > Cuidado personal > Cosméticos',
+                    'Type': 'Gel Polish',
+                    'Status': 'active'
                 }
-                products.append(img_record)
+            products.append(img_record)
 
             # Запись данных в CSV
             write_to_csv(products)
