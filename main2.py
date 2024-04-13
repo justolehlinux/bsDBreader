@@ -36,30 +36,42 @@ def extract_product_data(url):
     """
     Извлекает данные о продукте из HTML-кода страницы товара.
     """
+    Handle = url.split('/')[-1].replace('.html','')
+    colorname = Handle.split('-')[-2]
+    print(url)
+    print(Handle)
     html = get_search_results(url)
     if html:
         # extracted_setring = html.split('/')[-1].replace('.html', '')
         soup = BeautifulSoup(html, 'html.parser')
         spu = soup.find('span', class_='value', itemprop='sku').text
         detail = soup.find('div', class_='value').text
+        # print(Handle)
+        # colorName = str(Handle).split('-')[-1]
         name = soup.find('h1').text
-        imgs = count_duplicates([img.get('src') for img in soup.find_all('img', class_='img-responsive')], spu)
+        imgs = count_duplicates([img.get('src') for img in soup.find_all('img', class_='img-responsive')], spu, colorname)
         data = {
+            'Handle': Handle,
+            'spu': spu,
             'spu': spu,
             'name': name,
             'img_urls': imgs,
             'detail': detail,
         }
+        # print(data)
         return data
     return None
 
-def count_duplicates(img_urls, name):
+def count_duplicates(img_urls, name, Handle):
     """
     Подсчитывает дубликаты URL-адресов изображений.
     """
     duplicates_count = Counter(img_urls)
 
-    return [img_url for img_url, count in duplicates_count.items() if count > 1 and name in img_url]
+    return [img_url for img_url, count in duplicates_count.items() 
+            if count > 1 
+            and name in img_url 
+            or Handle in img_url]
 
 def write_to_csv(products):
     """
@@ -85,16 +97,18 @@ def write_to_csv(products):
             writer.writerow(product)
 
 def main():
-    # SPU = "941423"
+    # SPU = "941977"
+    # letsgo(SPU)
+
     # Пример использования функции
     file_path = "example.txt"  # Путь к вашему файлу
 
     lines = read_lines_from_file    (file_path)
     # Пройдемся по каждой строке файла и напечатаем ее
-    for line in lines:
+    for index, line in enumerate(lines, start=1):
         letsgo(line)
-        print("Good"
-              "\n")
+        print(f"{index}/{len(lines)}")
+        print("Good\n")
 
 def read_lines_from_file(filename):
     """
@@ -130,7 +144,8 @@ def letsgo(SPU):
         # print(product_data)
         if product_data and product_data['img_urls']:            # Создание записи о продукте для CSV
             product_record = {
-                'Handle': product_links[0].split('/')[-1].replace('.html', ''),
+                # 'Handle': product_links[0].split('/')[-1].replace('.html', ''),
+                'Handle': product_data['Handle'],
                 'Title': product_data['name'],
                 'Body (HTML)': product_data['detail'],
                 'Vendor': 'Reforma',
@@ -160,26 +175,27 @@ def letsgo(SPU):
             products.append(product_record)
             for img_index, img_url in enumerate(product_data['img_urls'], start=2):
                 img_record = {
+                    'Handle': product_data['Handle'],
                     'Image Src': img_url,
                     'Image Position': str(img_index)
                 }
                 products.append(img_record)
 
-        # Запись данных в CSV
-        write_to_csv(products)
-        print("Данные успешно записаны в файл 'products.csv'")
+            # Запись данных в CSV
+            write_to_csv(products)
+            print("Данные успешно записаны в файл 'products.csv'")
     else:
-        write_to_csv_NotFound(int(SPU))
+        write_to_csv_NotFound(SPU)
         print("Не найдены ссылки на товары.")
         # print(data["handle"])
 
         # # print(data["detail"])
         # # print(extract_product_data(product_links[0]))
 
-def write_to_csv_NotFound(var1):
+def write_to_csv_NotFound(SPU):
     with open('notFined.cvs', 'a', newline='') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(var1)
+        writer.writerow(SPU)
 
 # Example usage:
 
