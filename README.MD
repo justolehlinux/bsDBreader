@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 Product Data Extraction and CSV Writer
 This project is designed to extract product data from a specified URL and write the extracted data into a CSV file. The project utilizes Python, along with libraries such as BeautifulSoup, requests, and csv, to accomplish this task.
+=======
+# Web Scraping Tool
+>>>>>>> db772fc (Update README: remove box drawing characters, add markdown syntax)
 
 Table of Contents
 Getting Started
@@ -13,11 +17,26 @@ To get started with this project, you will need to have Python installed on your
 
 Once you have Python installed, you can clone this repository to your local machine using the following command:
 
+<<<<<<< HEAD
 bash
 Copy code
 git clone https://github.com/your-username/product-data-extraction.git
 Prerequisites
 This project requires the following Python libraries:
+=======
+## Usage
+1. Make sure you have Python installed on your system.
+2. Install the required Python libraries using pip:
+```markdown
+   pip install requests beautifulsoup4
+   ```
+3. Clone or download the script to your local machine.
+4. Run the script by executing the following command in your terminal:
+```markdown
+   python script_name.py
+   ```
+5. Follow the prompts to input the necessary information.
+>>>>>>> db772fc (Update README: remove box drawing characters, add markdown syntax)
 
 BeautifulSoup
 requests
@@ -32,6 +51,7 @@ pip install beautifulsoup4 requests
 Usage
 To use this project, simply run the main.py script:
 
+<<<<<<< HEAD
 bash
 Copy code
 python main.py
@@ -57,3 +77,6 @@ This will extract product data for the SKU "941977" and write the data to a CSV 
 
 License
 This project is licensed under the MIT License. See the LICENSE file for details.
+=======
+For detailed usage instructions and customization options, refer to the comments within the script.
+>>>>>>> db772fc (Update README: remove box drawing characters, add markdown syntax)
