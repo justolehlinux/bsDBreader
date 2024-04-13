@@ -49,7 +49,8 @@ def extract_product_data(url):
         # print(Handle)
         # colorName = str(Handle).split('-')[-1]
         name = soup.find('h1').text
-        imgs = count_duplicates([img.get('src') for img in soup.find_all('img', class_='img-responsive')], spu, colorname)
+        # imgs = count_duplicates([img.get('src') for img in soup.find_all('img', class_='img-responsive', alt=name)], spu, colorname)
+        imgs = [img.get('src') for img in soup.find_all('img', class_='img-responsive', alt=name)]
         data = {
             'Handle': Handle,
             'spu': spu,
@@ -70,14 +71,16 @@ def count_duplicates(img_urls, name, Handle):
 
     return [img_url for img_url, count in duplicates_count.items() 
             if count > 1 
-            and name in img_url 
-            or Handle in img_url]
+            # and name in img_url 
+            # or Handle in img_url
+            # and "jpeg" not in img_url
+            ]
 
 def write_to_csv(products):
     """
     Записывает данные о продуктах в CSV-файл.
     """
-    with open('products.csv', 'a', newline='', encoding='utf-8') as csvfile:
+    with open('products1.csv', 'a', newline='', encoding='utf-8') as csvfile:
         fieldnames = ['Handle', 'Title', 'Body (HTML)', 'Vendor', 'Product Category', 'Type', 'Tags',
                       'Published', 'Option1 Name', 'Option1 Value', 'Option2 Name', 'Option2 Value',
                       'Option3 Name', 'Option3 Value', 'Variant SKU', 'Variant Grams', 'Variant Inventory Tracker',
@@ -157,7 +160,7 @@ def letsgo(SPU):
                 'Variant SKU': product_data['spu'],
                 'Variant Grams': '15.0',
                 'Variant Inventory Tracker': 'shopify',
-                'Variant Inventory Qty': '3',
+                'Variant Inventory Qty': '0',
                 'Variant Inventory Policy': 'deny',
                 'Variant Fulfillment Service': 'manual',
                 'Variant Price': '10.00',
