@@ -1,1 +1,7 @@
 *.csv
+*.css
+*.txt
+dcvs
+*.html
+*.code-workspace
+.env

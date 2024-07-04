@@ -1,5 +1,6 @@
 import csv
 import requests
+from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 from collections import Counter
 import logging
